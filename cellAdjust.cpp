@@ -921,10 +921,10 @@ void cellAdjust::writeCellAdjust(const string &outpath, const string &outline_pa
     m_cgefwPtr = new CgefWriter();
     m_cgefwPtr->setOutput(outpath);
     m_cgefwPtr->setGefVersion(m_bgefopts->bgef_version);
-    CellBinAttr cell_bin_attr = {/*.version = */ m_bgefopts->bgef_version,
-                                 /*.resolution = */ m_resolution,
-                                 /*.offsetX = */ m_min_x,
-                                 /*.offsetY = */ m_min_y};
+    CellBinAttr cell_bin_attr = {/*.version = */ static_cast<unsigned int>(cgef_version_),
+                                 /*.resolution = */ static_cast<unsigned int>(m_resolution),
+                                 /*.offsetX = */ m_offsetX,
+                                 /*.offsetY = */ m_offsetY, m_szomics};
     m_cgefwPtr->storeAttr(cell_bin_attr);
     writeCell(cellptr, cellcnt, dnbptr, dnbcnt);
     writeGene();
@@ -1256,10 +1256,10 @@ void cellAdjust::writeToCgef(const string &outpath) {
     m_cgefwPtr->setOutput(outpath);
     m_cgefwPtr->setGefVersion(cgef_version_);
 
-    CellBinAttr cell_bin_attr = {/*.version = */ cgef_version_,
+    CellBinAttr cell_bin_attr = {/*.version = */ static_cast<unsigned int>(cgef_version_),
                                  /*.resolution = */ m_resolution,
                                  /*.offsetX = */ m_offsetX,
-                                 /* .offsetY = */ m_offsetY, m_szomics};
+                                 /*.offsetY = */ m_offsetY, m_szomics};
     m_cgefwPtr->storeAttr(cell_bin_attr);
 
     writeCellToCgef();

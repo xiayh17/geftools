@@ -137,7 +137,7 @@ void cgefCellgem::writeFile(CgefWriter *cwptr, const string &strmask, const stri
 }
 
 void cgefCellgem::writeAttr() {
-    CellBinAttr cell_bin_attr = {/*.version = */ cgefParam::GetInstance()->gef_version,
+    CellBinAttr cell_bin_attr = {/*.version = */ static_cast<unsigned int>(cgefParam::GetInstance()->gef_version),
                                  /*.resolution = */ cgefParam::GetInstance()->m_resolution,
                                  /*.offsetX = */ cgefParam::GetInstance()->m_min_x,
                                  /*.offsetY = */ cgefParam::GetInstance()->m_min_y,

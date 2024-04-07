@@ -163,11 +163,8 @@ class getleveldnbtask : public ITask {
         {
             std::lock_guard<std::mutex> tlock(m_mtx);
             uint32_t sz = m_vecdnb.size() * sizeof(leveldnb);
-        #ifdef _WIN32
-            memcpy((char*)dbuf_.pbuf + dbuf_.sz, m_vecdnb.data(), sz);
-        #else
-            memcpy(dbuf_.pbuf + dbuf_.sz, m_vecdnb.data(), sz);
-        #endif
+            char* target = static_cast<char*>(dbuf_.pbuf) + dbuf_.sz;  // Correctly calculate the target address.
+            memcpy(target, m_vecdnb.data(), sz);  // Copy data.
             dbuf_.sz += sz;
             dbuf_.cnt += m_vecdnb.size();
         }

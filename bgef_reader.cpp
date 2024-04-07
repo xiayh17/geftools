@@ -4,10 +4,6 @@
 
 #include "bgef_reader.h"
 
-#ifndef _WIN32
-#include <malloc.h>
-#endif
-
 #include "bin_task.h"
 #include "dnb_merge_task.h"
 #include "getBgefExpTask.h"
@@ -1073,9 +1069,6 @@ int BgefReader::generateGeneExp(int bin_size, int n_thread) {
 
     map<string, vector<Expression>>().swap(gene_exp_map);
     std::unordered_map<std::string, std::vector<Expression>>().swap(opts_->map_gene_exp_);
-#ifndef _WIN32
-    malloc_trim(0);
-#endif
     cprev = printCpuTime(cprev, "generateBinInfo");
     return 0;
 }
@@ -1742,9 +1735,10 @@ uint32_t BgefReader::getGeneDnbNum() {
 levelgenednb *BgefReader::getGeneDnbData() {
     if (!m_vecdnb.empty()) {
         levelgenednb *pbuf = new levelgenednb[m_vecdnb.size()];
-        memcpy(pbuf, &m_vecdnb[0], m_vecdnb.size() * sizeof(levelgenednb));
+        // Assuming you want to copy the entire content of m_vecdnb to pbuf
+        std::memcpy(pbuf, m_vecdnb.data(), m_vecdnb.size() * sizeof(levelgenednb));
         m_vecdnb.clear();
-        vector<levelgenednb>().swap(m_vecdnb);
+        vector<levelgenednb>().swap(m_vecdnb); // This effectively deallocates the vector
         return pbuf;
     } else {
         return nullptr;
